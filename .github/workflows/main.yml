@@ -5,22 +5,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4 # v2'den v4'e güncellendi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5 # v2'den v5'e güncellendi
         with:
           python-version: '3.10'
       
       - name: Install Flet and Dependencies
         run: |
-          pip install flet
+          pip install flet requests certifi
           
       - name: Build APK
         run: |
+          # Flet'in APK basması için gereken komut
           flet build apk
           
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4 # İşte hata veren kritik yer burasıydı, v4 yaptık!
         with:
           name: malo-apk
           path: build/apk/*.apk
-          
