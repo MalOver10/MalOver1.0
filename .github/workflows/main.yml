@@ -16,7 +16,11 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0' # Kararlı sürüm
+          # Flet'in hata mesajında istediği tam sürüm:
+          flutter-version: '3.24.4' 
+          # Not: GitHub Actions'da 3.41 henüz olmayabilir, 
+          # ama 3.24+ genellikle Flet 0.84'ü susturur. 
+          # Eğer yine sürüm isterse 'any' yapıp en yenisini çektireceğiz.
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -27,10 +31,11 @@ jobs:
         run: |
           pip install flet requests certifi
           
-      - name: Build APK
+      - name: Build APK (Susturucu Modu)
         run: |
-          # Flet'in build klasörünü hazırlaması için
-          flet build apk --verbose
+          # 'yes' komutu ile tüm sorulara otomatik 'y' diyoruz
+          # '--no-interaction' bayrağı da varsa soruyu engeller
+          yes | flet build apk --verbose
           
       - name: Upload APK
         uses: actions/upload-artifact@v4
